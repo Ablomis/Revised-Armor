@@ -1,5 +1,5 @@
 function UnitProperties:GetInventoryMaxSlots()
-    local inventorySlots = 4
+    local inventorySlots = 6
     self:ForEachItem("Armor", function(item, slot)
         if item.InventorySlots then
             inventorySlots = inventorySlots + item.InventorySlots
@@ -26,10 +26,12 @@ function XInventoryTile:Init()
     local k =1
     local emptyImage = "UI/Inventory/T_Backpack_Slot_Small_Empty.tga"
     local hoverImage = "UI/Inventory/T_Backpack_Slot_Small_Hover.tga"
+    local imageBase ="UI/Inventory/T_Backpack_Slot_Small.tga"
     if TileConfig.Size == "Large" then
         k = 2
         emptyImage = "UI/Inventory/T_Backpack_Slot_Large_Empty.tga"
         hoverImage = "UI/Inventory/T_Backpack_Slot_Large_Hover.tga"
+        imageBase ="UI/Inventory/T_Backpack_Slot_Large.tga"
     end
     local image = XImage:new({
       MinWidth = tile_size * k,
@@ -51,7 +53,7 @@ function XInventoryTile:Init()
         ImageFit = "width"
       }, self)
       imgslot:SetImage(self.slot_image)
-      image:SetImage("UI/Inventory/T_Backpack_Slot_Small.tga")
+      image:SetImage(imageBase)
       image:SetImageColor(RGB(255, 255, 255))
     end
     local rollover_image = XImage:new({
@@ -67,6 +69,25 @@ function XInventoryTile:Init()
     rollover_image:SetVisible(false)
 end
 
+function Inventory:GetSlotData(slot_name)
+    return self.inventory_slots[slot_name]
+end
+
+function Inventory:GetSlotDataDim(slot_name)
+    
+    local slot_data = self:GetSlotData(slot_name)
+    local width = slot_data.width
+    local height = slot_data.height
+    local max_tiles = self:GetMaxTilesInSlot(slot_name)
+    local last_row_width = width
+    if max_tiles < width * height then
+      local rem = max_tiles % width
+      height = max_tiles / width + (rem == 0 and 0 or 1)
+      last_row_width = rem == 0 and width or rem
+    end
+    return width, height, last_row_width
+  end
+
 function XInventorySlot:Setslot_name(slot_name)
     local context = self:GetContext()
     if not context then
@@ -74,37 +95,82 @@ function XInventorySlot:Setslot_name(slot_name)
     end
     self.tiles = {}
     TileConfig.Type = "Small"
+    TileConfig.Size = "Small"
     self.slot_name = slot_name
     local slot_data = context:GetSlotData(slot_name)
     local width, height, last_row_width = context:GetSlotDataDim(slot_name)
+    
+
+--CREATE LBE SLOT----------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------
+
+    --CREATE SUPPORT SLOTS----------------------------------------------------------------------------------------------------------
     if context.unitdatadef_id and (slot_name == "Inventory") then
+        local row = 1
+        local column = 1
         for i = 1, width do self.tiles[i] = {} end
+        --CREATE LBE SLOT----------------------------------------------------------------------------------------------------------
+        TileConfig.Type  = "LBE"
+        TileConfig.Size = "Small"
+        local tile = self:SpawnTile(slot_name, column, row)
+        if tile then
+          tile:SetContext(context)
+          tile:SetGridX(column)
+          tile:SetGridY(row)
+          tile.idBackImage:SetTransparency(self.image_transparency)
+          if slot_data.enabled == false then
+            tile:SetEnabled(false)
+          end
+          tile.Type = TileConfig.Type
+          self.tiles[column][row] = tile
+        end
+
+        --CREATE HOLSTER SLOT----------------------------------------------------------------------------------------------------------
+        column = 2
         TileConfig.Type  = "Shoulder"
-        for i = 1, 2 do
-                local tile = self:SpawnTile(slot_name, i, 1)
-                if tile then
-                  tile:SetContext(context)
-                  tile:SetGridX(i)
-                  tile:SetGridY(1)
-                  tile.idBackImage:SetTransparency(self.image_transparency)
-                  if slot_data.enabled == false then
-                    tile:SetEnabled(false)
-                  end
-                  tile.Type = TileConfig.Type
-                  self.tiles[i][1] = tile
-                  --[[tile.idBackImage.Image = "UI/Inventory/T_Backpack_Slot_Large_Empty.tga"
-                  tile.idBackImage.MinWidth = 220
-                  tile.idBackImage.MaxWidth = 220
-                  for k,v in pairs(tile.idBackImage) do
-                    print(k)
-                  end
-                  print(tile.idBackImage.Image)]]--
+        TileConfig.Size = "Large"
+        for i = column, column+1 do
+            local tile = self:SpawnTile(slot_name, i, row)
+            if tile then
+                tile:SetContext(context)
+                tile:SetGridX(i)
+                tile:SetGridY(row)
+                tile.idBackImage:SetTransparency(self.image_transparency)
+                if slot_data.enabled == false then
+                tile:SetEnabled(false)
                 end
-        end   
+                tile.Type = TileConfig.Type
+                self.tiles[i][row] = tile
+            end
+        end  
+
+        --CREATE POCKETS----------------------------------------------------------------------------------------------------------
+        column = 4
+        TileConfig.Type  = "PocketSmall"
+        TileConfig.Size = "Small"
+        for i = column, column+2 do
+            local tile = self:SpawnTile(slot_name, i, row)
+            if tile then
+                tile:SetContext(context)
+                tile:SetGridX(i)
+                tile:SetGridY(row)
+                tile.idBackImage:SetTransparency(self.image_transparency)
+                if slot_data.enabled == false then
+                tile:SetEnabled(false)
+                end
+                tile.Type = TileConfig.Type
+                self.tiles[i][row] = tile
+            end
+        end  
+        column = 1 
+        row = 2
+        print(height)
+        --CREATE INVENTORY SLOTS----------------------------------------------------------------------------------------------------------
         TileConfig.Type = "Small"
+        TileConfig.Size = "Small"
         for i = 1, width do
-          for j = 2, height+1 do
-            if j ~= height+1 or i <= last_row_width then
+          for j = row, height do
+            if j ~= height or i <= last_row_width then
               local tile = self:SpawnTile(slot_name, i, j)
               if tile then
                 tile:SetContext(context)
@@ -123,6 +189,7 @@ function XInventorySlot:Setslot_name(slot_name)
     else
         for i = 1, width do
             TileConfig.Type = "Small"
+            TileConfig.Size = "Small"
             self.tiles[i] = {}
             for j = 1, height do
             if j ~= height or i <= last_row_width then
@@ -234,6 +301,10 @@ function ItemFitsTile(item, tile)
             if not IsKindOfClasses(item, "AssualtRifle", "SniperRifle", "MachineGun", "Shotgun") then
                 return false, "Doesn't fit here"
             end
+        elseif tile.Type == "LBE" then
+            if not IsKindOf(item, "LBE") then
+                return false, "Doesn't fit here"
+            end
         elseif tile.Type == "Small" then
             if IsKindOfClasses(item, "AssualtRifle", "SniperRifle", "MachineGun", "Shotgun", "SMG") then
                 return false, "Doesn't fit here"
@@ -241,4 +312,7 @@ function ItemFitsTile(item, tile)
         end
     end
     return true
+end
+
+function CreateLargeTile(tileSet)
 end

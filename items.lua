@@ -16,8 +16,16 @@ PlaceObj('ModItemCode', {
 	'CodeFileName', "Code/Inventory.lua",
 }),
 PlaceObj('ModItemCode', {
+	'name', "LBEItemDef",
+	'CodeFileName', "Code/LBEItemDef.lua",
+}),
+PlaceObj('ModItemCode', {
 	'name', "ModOptions",
 	'CodeFileName', "Code/ModOptions.lua",
+}),
+PlaceObj('ModItemCode', {
+	'name', "LBEItems",
+	'CodeFileName', "Code/LBEItems.lua",
 }),
 PlaceObj('ModItemCode', {
 	'name', "XtemplateInventory",
