@@ -1,0 +1,23 @@
+return PlaceObj('ModDef', {
+	'title', "Revised Armor",
+	'description', "[b]WHY[/b]: a more realistic and unpredictable behavior of armor.\n\n[b]WHAT[/b]: This mod changes armor damage reduction mechanics\n\n[b]HOW[/b]\n[list]\n    [*]If a bullet doesnt penetrate the armor it loses 80% of dmagae potential. In vanilla the the the bullet loses majority of damage potential IRRESPECTIVE of whether it penetrated armor or not\n	[*]If the bullet penetrates the armor it still loses damage potential BUT the difference in penetration levels matter.\n	[*]Ceramic plates increase armor penetration protection BUT they ar emore brittle\n	[*]Weave padding increases armor durability and base damage protection\n	[*]There is always a chance that the bullet will not be stopped by armor which depends on armor condition. (If your armor full of holes, well, tough luck)\n	[*]Flak armor stops pistol bullets in vanilla? Not anymore. Want protection from pistol bullets - bring ceramic plates with you.\n	\nAs always mod can be configured in mod options. (If anything is not clear - please ask in comments)\n\nCompatibility restrictions: not compatible with mods that make changes to ApplyHitDamageReduction method",
+	'image', "Mod/hvRdbow/JA3Revised-Armor.png",
+	'last_changes', "tags",
+	'id', "hvRdbow",
+	'author', "Ablomis",
+	'version', 167,
+	'lua_revision', 233360,
+	'saved_with_revision', 340446,
+	'code', {
+		"Code/ApplyHitDamageReduction.lua",
+		"Code/ArmorItems.lua",
+		"Code/Config.lua",
+		"Code/Inventory.lua",
+		"Code/ModOptions.lua",
+		"Code/XtemplateInventory.lua",
+	},
+	'has_options', true,
+	'saved', 1693705607,
+	'code_hash', -4022582371558577367,
+	'steam_id', "3024418498",
+})
