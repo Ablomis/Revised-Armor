@@ -1,7 +1,7 @@
 function OnMsg.ApplyModOptions()
-    RevisedArmorConfigValues.ArmorDegradationScale = CurrentModOptions['RevisedArmorDegradationScale']
-    RevisedArmorConfigValues.BaseDamageReduction = CurrentModOptions['RevisedBaseDamageReduction']
-    RevisedArmorConfigValues.WeavePaddingBonus = CurrentModOptions['RevisedWeavePaddingBonus']
-    RevisedArmorConfigValues.NonPenDamageReduction = CurrentModOptions['RevisedNonPenDamageReduction']
-    RevisedArmorConfigValues.PenDamageReduction = CurrentModOptions['RevisedPenDamageReduction']
+    RevisedArmorConfigValues.ArmorDegradationScale = tonumber(CurrentModOptions['RevisedArmorDegradationScale'])
+    RevisedArmorConfigValues.BaseDamageReduction = tonumber(CurrentModOptions['RevisedBaseDamageReduction'])
+    RevisedArmorConfigValues.WeavePaddingBonus = tonumber(CurrentModOptions['RevisedWeavePaddingBonus'])
+    RevisedArmorConfigValues.NonPenDamageReduction = tonumber(CurrentModOptions['RevisedNonPenDamageReduction'])
+    RevisedArmorConfigValues.PenDamageReduction = tonumber(CurrentModOptions['RevisedPenDamageReduction'])
 end

@@ -1,4 +1,19 @@
 function Unit:ApplyHitDamageReduction(hit, weapon, hit_body_part, ignore_cover, ignore_armor, record_breakdown)
+  local attacker = g_Units[weapon.owner]
+
+  local angleDifference = (self:GetPosOrientation()/60-attacker:GetPosOrientation()/60 + 360) % 360
+  local side
+
+  if angleDifference >= 0 and angleDifference <= 90 then
+      side = "Right"
+  elseif angleDifference > 90 and angleDifference <= 180 then
+    side = "Front"
+  elseif angleDifference > 180 and angleDifference <= 270 then
+    side = "Left"
+  else
+    side = "Back"
+  end
+
   local damage = hit.damage or 0
   local dmg = damage
   local armor_decay, armor_pierced = {}, {}
