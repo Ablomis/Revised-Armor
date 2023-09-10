@@ -7,7 +7,6 @@ function Armor:GetDamageReduction(weapon, side, armor_pierced)
     if pen_difference>=1 then
         dr = RevisedArmorConfigValues.NonPenDamageReduction
     else
-        print("pen_difference<1")
         dr = Max(self.DamageReduction - RevisedArmorConfigValues.PenDamageReduction * pen_difference,0)
         penetrated = true
     end
@@ -15,19 +14,20 @@ function Armor:GetDamageReduction(weapon, side, armor_pierced)
     if side == "Front" then
         if self.FrontPlate then
             print("self.FrontPlate")
-            pen_difference = self.FrontPlate.PenetrationClass - weapon_pen
             plate_hit = self.FrontPlate
         end
     elseif side == "Back" then
         if self.BackPlate then
-            pen_difference = self.BackPlate.PenetrationClass - weapon_pen
             plate_hit = self.BackPlate
         end
     end
 
     if plate_hit and (plate_hit.Condition >0) then
+        pen_difference = plate_hit.PenetrationClass - weapon_pen
+        print(pen_difference)
         if pen_difference >= 1 then
             dr = dr + RevisedArmorConfigValues.NonPenDamageReduction
+            print("palte dr: ", dr)
             penetrated = false
         else
             dr = dr + Max(RevisedArmorConfigValues.BaseDamageReduction - RevisedArmorConfigValues.PenDamageReduction * pen_difference,0)

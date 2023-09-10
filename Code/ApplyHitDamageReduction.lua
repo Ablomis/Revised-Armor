@@ -1,10 +1,9 @@
-function Unit:ApplyHitDamageReduction(hit, weapon, hit_body_part, ignore_cover, ignore_armor, record_breakdown)
-  local attacker = g_Units[weapon.owner]
+function Unit:ApplyHitDamageReduction(hit, weapon, hit_body_part, ignore_cover, ignore_armor, record_breakdown, attacker)
+  local attacker = weapon:GetOwner()
 
   local angleDifference = (self:GetPosOrientation()/60-attacker:GetPosOrientation()/60 + 360) % 360
   local side
   
-
   if angleDifference >= 0 and angleDifference <= 90 then
       side = "Right"
   elseif angleDifference > 90 and angleDifference <= 180 then
@@ -24,12 +23,12 @@ function Unit:ApplyHitDamageReduction(hit, weapon, hit_body_part, ignore_cover, 
       local dr, degrade = 0, 0
 
       if not ignore_armor and 0 < item.Condition then
-        print("here")
         dr = item.DamageReduction
         degrade = MulDivRound(item.Degradation, 50 + self:Random(100), 100)
         if slot=="Torso" then
           print("Torso")
           dr = item:GetDamageReduction(weapon, side, armor_pierced)
+          print("final dr: ", dr)
         else
           local pen_diff = item.PenetrationClass - weapon_pen_class
           if pen_diff > 0 and self:Random(100)<=item.Condition then
@@ -95,4 +94,11 @@ function Unit:ApplyHitDamageReduction(hit, weapon, hit_body_part, ignore_cover, 
   hit.damage = dmg
   hit.armor_decay = armor_decay
   hit.armor_pen = armor_pierced
+end
+
+function BaseWeapon:GetOwner()
+  for _, unit in pairs(g_Units) do
+    if self == unit:GetActiveWeapons() then return unit end
+  end
+  return false
 end
