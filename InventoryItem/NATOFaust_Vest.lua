@@ -10,9 +10,12 @@ DefineClass.NATOFaust_Vest = {
 	DisplayName = T(156970163394, --[[ModItemInventoryItemCompositeDef NATOFaust_Vest DisplayName]] "NATO Faust Vest"),
 	DisplayNamePlural = T(112226747458, --[[ModItemInventoryItemCompositeDef NATOFaust_Vest DisplayNamePlural]] "NATO Faust Vest"),
 	Description = T(177648810686, --[[ModItemInventoryItemCompositeDef NATOFaust_Vest Description]] "SpecOps NATO vest from 90s"),
-	AdditionalHint = T(128325042710, --[[ModItemInventoryItemCompositeDef NATOFaust_Vest AdditionalHint]] "Mad from Cordura"),
+	AdditionalHint = T(128325042710, --[[ModItemInventoryItemCompositeDef NATOFaust_Vest AdditionalHint]] "Made from Cordura"),
 	DamageReduction = 0,
 	AdditionalReduction = 0,
 	ProtectedBodyParts = set( "Torso" ),
+	Weight = 1,
+	FrontPlatePouch = true,
+	BackPlatePouch = true,
 }
 

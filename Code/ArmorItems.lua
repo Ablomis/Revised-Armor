@@ -1,5 +1,3 @@
-
-
 UndefineClass('FlakArmor_CeramicPlates')
 DefineClass.FlakArmor_CeramicPlates = {
 	__parents = { "TransmutedArmor" },

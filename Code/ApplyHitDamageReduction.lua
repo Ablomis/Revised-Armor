@@ -3,6 +3,7 @@ function Unit:ApplyHitDamageReduction(hit, weapon, hit_body_part, ignore_cover, 
 
   local angleDifference = (self:GetPosOrientation()/60-attacker:GetPosOrientation()/60 + 360) % 360
   local side
+  
 
   if angleDifference >= 0 and angleDifference <= 90 then
       side = "Right"
@@ -21,19 +22,26 @@ function Unit:ApplyHitDamageReduction(hit, weapon, hit_body_part, ignore_cover, 
   self:ForEachItem("Armor", function(item, slot)
     if 0 < dmg and slot ~= "Inventory" and item.ProtectedBodyParts and item.ProtectedBodyParts[hit_body_part] then
       local dr, degrade = 0, 0
+
       if not ignore_armor and 0 < item.Condition then
+        print("here")
         dr = item.DamageReduction
-        degrade = item.Degradation
-        local pen_diff = item.PenetrationClass - weapon_pen_class
-        if pen_diff > 0 and self:Random(100)<=item.Condition then
-            dr = RevisedArmorConfigValues.NonPenDamageReduction
-            degrade = MulDivRound(degrade, RevisedArmorConfigValues.ArmorDegradationScale, 100)
+        degrade = MulDivRound(item.Degradation, 50 + self:Random(100), 100)
+        if slot=="Torso" then
+          print("Torso")
+          dr = item:GetDamageReduction(weapon, side, armor_pierced)
         else
-          armor_pierced[item] = true
-          dr = Max(RevisedArmorConfigValues.BaseDamageReduction + RevisedArmorConfigValues.PenDamageReduction * pen_diff,0) 
-          if string.find(item.class, "Weave") then 
-            dr =  dr + RevisedArmorConfigValues.WeavePaddingBonus 
-            end
+          local pen_diff = item.PenetrationClass - weapon_pen_class
+          if pen_diff > 0 and self:Random(100)<=item.Condition then
+              dr = RevisedArmorConfigValues.NonPenDamageReduction
+              degrade = MulDivRound(degrade, RevisedArmorConfigValues.ArmorDegradationScale, 100)
+          else
+            armor_pierced[item] = true
+            dr = Max(RevisedArmorConfigValues.BaseDamageReduction + RevisedArmorConfigValues.PenDamageReduction * pen_diff,0) 
+            if string.find(item.class, "Weave") then 
+              dr =  dr + RevisedArmorConfigValues.WeavePaddingBonus 
+              end
+          end
         end
       else
         armor_pierced[item] = true

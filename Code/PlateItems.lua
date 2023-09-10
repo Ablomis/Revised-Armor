@@ -13,10 +13,10 @@ DefineClass.Plate_Ceramic = {
     <bullet_point> <Type> Plate]]),
     Weight = 2.5,
     Type = "Front",
-    ProtectionLevel = "III",
-    PenetrationClass = 2,
-    DamageReduction = 80,
-    Degradation = 60
+    Protection = "CIII",
+    PenetrationClass = 3,
+    DamageReduction = 90,
+    Degradation = 16
 }
 
 UndefineClass('Plate_Steel')
@@ -34,8 +34,8 @@ DefineClass.Plate_Steel = {
     <bullet_point> <Type> Plate]]),
     Weight = 3.5,
     Type = "Front",
-    ProtectionLevel = "III",
-    PenetrationClass = 2,
-    DamageReduction = 80,
-    Degradation = 60
+    Protection = "SIII",
+    PenetrationClass = 3,
+    DamageReduction = 90,
+    Degradation = 66
 }

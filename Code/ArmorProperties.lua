@@ -1,5 +1,4 @@
-if FirstLoad then
-    ArmorProperties.properties[#ArmorProperties.properties+1] = {
+   ArmorProperties.properties[#ArmorProperties.properties+1] = {
         category = "General",
         id = "Weight",
         name = "Weight, Kg",
@@ -17,7 +16,7 @@ if FirstLoad then
         name = "Front Plate Pouch",
         help = "Can carry front palte",
         editor = "bool",
-        default = true,
+        default = false,
         template = true,
         modifiable = true
     }
@@ -27,10 +26,10 @@ if FirstLoad then
         name = "Back Plate Pouch",
         help = "Can carry back palte",
         editor = "bool",
-        default = true,
+        default = false,
         template = true,
         modifiable = true
     }
-end
+
 Armor.FrontPlate = false
 Armor.BackPlate = false

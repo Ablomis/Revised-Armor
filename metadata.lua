@@ -5,7 +5,7 @@ return PlaceObj('ModDef', {
 	'last_changes', "mod options fix",
 	'id', "hvRdbow",
 	'author', "Ablomis",
-	'version', 333,
+	'version', 375,
 	'lua_revision', 233360,
 	'saved_with_revision', 340446,
 	'code', {
@@ -18,10 +18,11 @@ return PlaceObj('ModDef', {
 		"Code/PlateDefinition.lua",
 		"Code/PlateItems.lua",
 		"Code/PlateReplacement.lua",
+		"Code/DamageReduction.lua",
 		"InventoryItem/NATOFaust_Vest.lua",
 	},
 	'has_options', true,
-	'saved', 1694297808,
-	'code_hash', 3886034635168596140,
+	'saved', 1694311624,
+	'code_hash', 5681225456195495991,
 	'steam_id', "3024418498",
 })

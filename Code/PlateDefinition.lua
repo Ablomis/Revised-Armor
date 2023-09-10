@@ -5,7 +5,7 @@ DefineClass.ArmorPlate = {
     },
     Weight = 2,
     Type = "Front",
-    ProtectionLevel = "II",
+    Protection = "II",
     PenetrationClass = 2,
     DamageReduction = 80,
     Degradation = 20
